@@ -1,0 +1,12 @@
+*~
+.target
+.classpath
+.project
+.scala_dependencies
+.settings
+bin
+target
+project/boot
+.ensime*
+.cache
+*.launch
