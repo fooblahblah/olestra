@@ -39,8 +39,13 @@ class OlestraSpec extends Specification with Olestra {
       result.map(_.id) === List("victorops")
     }
 
+    "Support users for an organization" in {
+      val result = Await.result(users, Duration(1, TimeUnit.SECONDS))
+      result.map(_.id) === List(38440, 38441, 38442)
+    }
+
     "Support users for a flow" in {
-      val result = Await.result(users(flowId), Duration(1, TimeUnit.SECONDS))
+      val result = Await.result(usersForFlow(flowId), Duration(1, TimeUnit.SECONDS))
       result.map(_.id) === List(38440, 38441, 38442)
     }
 

@@ -38,6 +38,8 @@ trait Olestra {
 
   protected def apiToken: String
 
+  protected def flowAuthorizationCreds(flowToken: String) = BasicHttpCredentials(flowToken, "X")
+
   protected def client: HttpRequest => Future[HttpResponse]
 
   protected def streamingClient: ActorRef
@@ -87,7 +89,15 @@ trait Olestra {
     }
   }
 
-  def users(flowId: String): Future[List[User]] = GET(s"/flows/${flowId}/users") map { response =>
+
+  def users: Future[List[User]] = organizations map { orgs =>
+    (orgs flatMap { org =>
+      org.users
+    } toSet) toList
+  }
+
+
+  def usersForFlow(flowId: String): Future[List[User]] = GET(s"/flows/${flowId}/users") map { response =>
     response.status match {
       case StatusCodes.OK => parse(response.entity.asString).as[List[User]]
       case _              => Nil
@@ -107,8 +117,10 @@ trait Olestra {
   }
 
   def sendMessage(flowToken: String, message: String, user: String): Future[Boolean] = {
-    val body = HttpBody(ContentType(`application/json`), Json.obj("external_user_name" -> user, "content" -> message).toString)
-    POST(s"/v1/messages/chat/${flowToken}", body) map { response =>
+    val body    = HttpBody(ContentType(`application/json`), Json.obj("external_user_name" -> user, "content" -> message).toString)
+    val request = HttpRequest(method = HttpMethods.POST, uri = s"/v1/messages/chat/${flowToken}", entity = body)
+
+    client(request) map { response =>
       response.status == StatusCodes.OK
     }
   }
