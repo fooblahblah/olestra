@@ -15,13 +15,13 @@ object TestApp {
 
     val flowId = "victorops/main"
 
-    organizations map { orgs =>
-      orgs foreach { org =>
-        println(org.users)
-      }
-    } foreach { i =>
-      sys.exit
-    }
+//    organizations map { orgs =>
+//      orgs foreach { org =>
+//        println(org.users)
+//      }
+//    } foreach { i =>
+//      sys.exit
+//    }
 
 //      Future(live(flowId, (msg: Message) => if(msg.content.isDefined) println(msg)))
 

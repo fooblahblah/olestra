@@ -116,7 +116,7 @@ trait Olestra {
     }
   }
 
-  def sendMessage(flowToken: String, message: String, user: String): Future[Boolean] = {
+  def sendMessage(flowToken: String, user: String, message: String): Future[Boolean] = {
     val body    = HttpBody(ContentType(`application/json`), Json.obj("external_user_name" -> user, "content" -> message).toString)
     val request = HttpRequest(method = HttpMethods.POST, uri = s"/v1/messages/chat/${flowToken}", entity = body)
 
