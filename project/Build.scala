@@ -24,7 +24,7 @@ object OlestraBuild extends Build {
     scalacOptions ++= Seq("-language:postfixOps", "-language:implicitConversions")
   )
 
-  lazy val playJson = RootProject(uri("https://github.com/victorops/play-json.git"))
+  lazy val playJson = RootProject(uri("https://github.com/victorops/play-json.git#abf0ea9dcb23a498cfae4fcd0dc06fb07e05b474"))
 
   lazy val root = Project(id = "olestra", base = file("."), settings = buildSettings) dependsOn (playJson)
 }
